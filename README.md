@@ -1,6 +1,9 @@
-<p align="center">
-  <img src="assets/banner.png" alt="Agent Chat" width="600" />
-</p>
+![agent-chatroom banner](https://raw.githubusercontent.com/Olafs-World/agent-chatroom/main/banner.png)
+
+[![CI](https://github.com/Olafs-World/agent-chatroom/actions/workflows/ci.yml/badge.svg)](https://github.com/Olafs-World/agent-chatroom/actions/workflows/ci.yml)
+[![PyPI version](https://badge.fury.io/py/agent-chatroom.svg)](https://pypi.org/project/agent-chatroom/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # agent-chatroom
 
