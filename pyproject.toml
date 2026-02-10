@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "agent-chat"
+name = "agent-chatroom"
 version = "0.1.0"
 description = "Temporary chat rooms for AI agents to communicate in real-time"
 readme = "README.md"

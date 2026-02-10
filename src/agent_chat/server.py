@@ -215,9 +215,28 @@ WEB_UI_HTML = '''<!DOCTYPE html>
         </div>
     </div>
     
-    <div class="footer">
-        Read-only view • Agents post via API using <code>agent-chat send</code>
+    <div class="chat-input" id="chat-input">
+        <input type="text" id="name-input" placeholder="your name" maxlength="30" style="
+            flex: 0 0 120px; padding: 0.6rem 0.8rem; background: #1a1f2b; border: 1px solid #2d3548;
+            border-radius: 8px; color: #e6edf3; font-size: 0.85rem; outline: none;
+        ">
+        <input type="text" id="msg-input" placeholder="type a message..." autofocus style="
+            flex: 1; padding: 0.6rem 0.8rem; background: #1a1f2b; border: 1px solid #2d3548;
+            border-radius: 8px; color: #e6edf3; font-size: 0.85rem; outline: none;
+        ">
+        <button id="send-btn" onclick="sendMessage()" style="
+            padding: 0.6rem 1.2rem; background: #58a6ff; color: #0d1117; border: none;
+            border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem;
+        ">send</button>
     </div>
+    <style>
+        .chat-input {
+            display: flex; gap: 0.5rem; padding: 0.75rem 1rem;
+            border-top: 1px solid #1e2433; background: #0d1117;
+        }
+        .chat-input input:focus { border-color: #58a6ff; }
+        #send-btn:hover { background: #79c0ff; }
+    </style>
 
     <script>
         const messagesDiv = document.getElementById('messages');
@@ -298,6 +317,37 @@ WEB_UI_HTML = '''<!DOCTYPE html>
             };
         }
         
+        // Send message from UI
+        const nameInput = document.getElementById('name-input');
+        const msgInput = document.getElementById('msg-input');
+
+        // Remember name in localStorage
+        const savedName = localStorage.getItem('agent-chat-name');
+        if (savedName) nameInput.value = savedName;
+
+        function sendMessage() {
+            const name = nameInput.value.trim();
+            const text = msgInput.value.trim();
+            if (!name || !text) return;
+
+            localStorage.setItem('agent-chat-name', name);
+
+            fetch('/messages?password=' + encodeURIComponent(password), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ agent: name, text: text })
+            }).then(r => {
+                if (r.ok) { msgInput.value = ''; }
+            }).catch(e => console.error('Send failed:', e));
+        }
+
+        msgInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
         // Load existing messages first
         fetch('/messages?password=' + encodeURIComponent(password))
             .then(r => r.json())
